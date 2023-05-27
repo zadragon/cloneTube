@@ -1,7 +1,12 @@
 import React from 'react';
+import Router from './shared/Router';
 
 function App() {
-    return <div className="App">클론코딩</div>;
+    return (
+        <div>
+            <Router />
+        </div>
+    );
 }
 
 export default App;
