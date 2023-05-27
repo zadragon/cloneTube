@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,14 +11,56 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { apiUser } from '../../api/api';
 
 export default function SignUp() {
-    const handleSubmit = event => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+    const [inputs, setInputs] = useState({
+        payload: {
+            UserId: '',
+            password: '',
+        },
+        pwValid: '',
+    });
+    const navigate = useNavigate();
+
+    const onSubmitHandler = e => {
+        e.preventDefault();
+
+        const { UserId, password } = inputs.payload;
+        const { pwValid } = inputs;
+        if (UserId == '') {
+            alert('아이디를 입력해주세요.');
+            return;
+        } else if (password !== pwValid) {
+            alert('비밀번호를 확인해주세요.');
+            return;
+        }
+
+        apiUser.userSignUp(inputs.payload, navigate);
+        setInputs({
+            payload: {
+                UserId: '',
+                password: '',
+            },
+            pwValid: '',
+        }); //인풋 초기화
+    };
+
+    const onChangeHandler = e => {
+        const { value, name } = e.target; // 우선 e.target 에서 name 과 value 를 추출
+        setInputs({
+            ...inputs, // 기존의 input 객체를 복사한 뒤
+            payload: {
+                ...inputs.payload,
+                [name]: value, // name 키를 가진 값을 value 로 설정
+            },
+        });
+    };
+
+    const onPwValidCheck = e => {
+        setInputs({
+            ...inputs,
+            pwValid: e.target.value,
         });
     };
 
@@ -36,18 +80,20 @@ export default function SignUp() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        회원가입
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={onSubmitHandler} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
                                     autoComplete="given-name"
-                                    name="firstName"
+                                    name="UserId"
                                     required
                                     fullWidth
-                                    id="firstName"
+                                    id="UserId"
                                     label="아이디"
+                                    value={inputs.payload.UserId}
+                                    onChange={onChangeHandler}
                                     autoFocus
                                 />
                             </Grid>
@@ -55,10 +101,12 @@ export default function SignUp() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="email"
+                                    id="password"
                                     label="비밀번호"
-                                    name="email"
-                                    autoComplete="email"
+                                    name="password"
+                                    value={inputs.payload.password}
+                                    onChange={onChangeHandler}
+                                    autoComplete="off"
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -68,8 +116,10 @@ export default function SignUp() {
                                     name="password"
                                     label="비밀번호 확인"
                                     type="password"
-                                    id="password"
-                                    autoComplete="new-password"
+                                    id="passwordCheck"
+                                    value={inputs.pwValid}
+                                    onChange={onPwValidCheck}
+                                    autoComplete="off"
                                 />
                             </Grid>
                         </Grid>
@@ -78,12 +128,12 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="space-between">
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/" variant="body2">
                                     홈으로
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/member/login" variant="body2">
                                     이미 계정이 있으신가요? 로그인
                                 </Link>
                             </Grid>
