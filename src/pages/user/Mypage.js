@@ -25,7 +25,7 @@ const Mypage = () => {
                         <div className="rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500">
                             <img src="/img/icon-space.png" className="max-w-full" />
                         </div>
-                        <Button>
+                        <Button color="youtube">
                             동영상 업로드 <Icon name="video paly" style={{ marignLeft: '5px' }} />
                         </Button>
                     </div>
