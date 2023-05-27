@@ -7,7 +7,7 @@ const Layout = () => {
         <div className="container place-content-center">
             <Header />
             {/* 공통영역 밑에 들어가는 콘텐츠 */}
-            <div id="content">
+            <div id="content" className="w-full py-5">
                 <Outlet />
             </div>
         </div>

@@ -5,6 +5,7 @@ import VideoList from '../pages/video/VideoList';
 import VideoDetail from '../pages/video/VideoDetail';
 import Login from '../pages/member/Login';
 import SignUp from '../pages/member/SignUp';
+import Mypage from '../pages/user/Mypage';
 
 const Router = () => {
     return (
@@ -19,6 +20,9 @@ const Router = () => {
                     {/* 비디오 관련 */}
                     <Route path="/" element={<VideoList />} />
                     <Route path="/video/detail/:id" element={<VideoDetail />} />
+
+                    {/* 개인페이지 */}
+                    <Route path="/user/mypage" element={<Mypage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
