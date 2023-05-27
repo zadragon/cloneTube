@@ -36,7 +36,7 @@ export default function SignUp() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        회원가입
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
@@ -78,12 +78,12 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="space-between">
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/" variant="body2">
                                     홈으로
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/member/login" variant="body2">
                                     이미 계정이 있으신가요? 로그인
                                 </Link>
                             </Grid>
