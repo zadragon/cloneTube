@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
     return (
-        <div id="container">
+        <div className="container place-content-center">
             <div className="header">헤더부분</div>
 
             {/* 공통영역 밑에 들어가는 콘텐츠 */}
