@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Icon, Item } from 'semantic-ui-react';
+import ModalTemp from '../../components/Modal';
 
 const Mypage = () => {
+    const [openMadal, setOpenModal] = useState(false);
+
+    const [modalInfo, setModalInfo] = useState({
+        header: '',
+    });
+
+    const openModal = header => {
+        setOpenModal(true);
+        setModalInfo({ ...modalInfo, header });
+    };
     return (
         <>
             <div className="flex max-w-full gap-3 border-solid border-b border-Slate-600 pt-5 pb-5">
@@ -9,7 +20,7 @@ const Mypage = () => {
                     <div className="rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500 overflow-hidden">
                         <img src="/img/user/molly.png" />
                     </div>
-                    <Button>
+                    <Button onClick={() => openModal('프로필 사진 올리기')}>
                         프로필 사진 올리기 <Icon name="user" style={{ marignLeft: '10px' }} />
                     </Button>
                 </div>
@@ -25,7 +36,7 @@ const Mypage = () => {
                         <div className="rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500">
                             <img src="/img/icon-space.png" className="max-w-full" />
                         </div>
-                        <Button color="youtube">
+                        <Button color="youtube" onClick={() => openModal('동영상 업로드')}>
                             동영상 업로드 <Icon name="video paly" style={{ marignLeft: '5px' }} />
                         </Button>
                     </div>
@@ -54,6 +65,7 @@ const Mypage = () => {
                     </Item.Group>
                 </div>
             </div>
+            <ModalTemp open={openMadal} setOpen={setOpenModal} modalInfo={modalInfo} />
         </>
     );
 };

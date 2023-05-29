@@ -3,6 +3,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import CommentBox from '../../components/Comment';
 import { apiUser } from '../../api/api';
 import { useMutation } from 'react-query';
+import VideoCard from '../../components/VideoCard';
 
 const VideoDetail = () => {
     const signUpMutation = useMutation(apiUser.userLogin, {
@@ -54,7 +55,13 @@ const VideoDetail = () => {
                 </div>
                 <CommentBox />
             </div>
-            <div>세로 재생영역</div>
+            <div>
+                <VideoCard />
+                <VideoCard />
+                <VideoCard />
+                <VideoCard />
+                <VideoCard />
+            </div>
         </div>
     );
 };
