@@ -1,7 +1,15 @@
 import React from 'react';
+import VideoCard from '../../components/VideoCard';
 
 const VideoList = () => {
-    return <div>비디오리스트</div>;
+    return (
+        <div className="flex">
+            <VideoCard />
+            <VideoCard />
+            <VideoCard />
+            <VideoCard />
+        </div>
+    );
 };
 
 export default VideoList;
