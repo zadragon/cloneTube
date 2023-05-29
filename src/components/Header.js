@@ -18,15 +18,19 @@ const Header = () => {
                 <input
                     className="w-7/12 p-1 rounded-full border border-gray-300"
                     type="text"
-                    placeholder="  검색"
+                    placeholder="    검색"
                     value={text}
                     onChange={onChangeHandler}
                 />
                 <button>
-                    <AiOutlineSearch className="flex text-2xl ml-2 text-gray-600" />
+                    <AiOutlineSearch className="flex text-3xl ml-2 text-gray-500" />
                 </button>
             </form>
-            <Avatar sx={{ m: 1, bgcolor: 'lightgray' }} src="/broken-image.jpg" className="flex-end ml-4" />
+            <Avatar
+                sx={{ m: 1, bgcolor: 'lightgray', width: 32, height: 32 }}
+                src="/broken-image.jpg"
+                className="flex-end ml-4"
+            />
         </header>
     );
 };
