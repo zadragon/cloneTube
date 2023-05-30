@@ -36,14 +36,7 @@ export default function SignUp() {
             return;
         }
 
-        apiUser.userSignUp(inputs.payload, navigate);
-        setInputs({
-            payload: {
-                UserId: '',
-                password: '',
-            },
-            pwValid: '',
-        }); //인풋 초기화
+        apiUser.userSignUp(inputs.payload, navigate, setInputs);
     };
 
     const onChangeHandler = e => {
