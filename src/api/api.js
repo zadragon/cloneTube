@@ -1,27 +1,68 @@
 import axios from 'axios';
 
 export const apiUser = {
-    userSignUp: payload => {
-        console.log(payload);
+    userSignUp: (payload, navigate, setInputs) => {
         axios
             .post(`${process.env.REACT_APP_HOST}/api/signup`, payload)
             .then(response => {
-                if (response.status === 200) {
-                    console.log(response);
+                if (response.status === 201) {
+                    alert(response.data.message);
+                    navigate('/member/login');
                 }
+                setInputs({
+                    payload: {
+                        UserId: '',
+                        password: '',
+                    },
+                    pwValid: '',
+                }); //인풋 초기화
             })
             .catch(error => {
-                console.log(error);
+                alert(error.response.data.errorMessage);
             });
     },
-    userLogin: payload => {
+    userLogin: (payload, setCookies, navigate) => {
         axios
             .post(`${process.env.REACT_APP_HOST}/api/login`, payload)
             .then(response => {
-                console.log(response.data);
+                setCookies('token', response.data.authorization);
+                navigate('/');
             })
             .catch(error => {
-                console.log(error);
+                alert('error', error.response.data.errorMessage);
             });
+    },
+
+    getUserProfile: token => {
+        console.log(token);
+
+        // fetch(`${process.env.REACT_APP_HOST}/api/sublist`, {
+        //     headers: {
+        //         Authorization: token,
+        //     },
+        // })
+        //     .then(response => {
+        //         console.log(response);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
+
+        return (
+            axios
+                //.get(`${process.env.REACT_APP_HOST}/api/profile`)
+                .get(`${process.env.REACT_APP_HOST}/api/sublist`, {
+                    headers: {
+                        Authorization: token,
+                    },
+                })
+
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        );
     },
 };
