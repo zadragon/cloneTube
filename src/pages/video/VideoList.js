@@ -52,7 +52,7 @@ const VideoList = () => {
     return (
         <>
             <MetaTag
-                title="영상보기 :: LoneTube"
+                title="영상목록 :: LoneTube"
                 description="세계최대 동영상 서비스"
                 keywords="론튜브, 영상, 유튜브"
             />

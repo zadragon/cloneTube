@@ -41,7 +41,7 @@ const Header = () => {
             <div className="relative">
                 {cookie.token ? (
                     <>
-                        <Link to="/user/mypage" className=" " onMouseEnter={() => setLayerOpen(true)}>
+                        <Link to="/user/mypage" onMouseEnter={() => setLayerOpen(true)}>
                             <Avatar
                                 sx={{ m: 1, bgcolor: 'lightgray', width: 32, height: 32 }}
                                 src="/broken-image.jpg"
@@ -53,7 +53,7 @@ const Header = () => {
                             onMouseLeave={() => setLayerOpen(false)}
                             onClick={logout}
                         >
-                            <button className=" text-xs">로그아웃</button>
+                            <button className="text-xs">로그아웃</button>
                         </LayerArea>
                     </>
                 ) : (
@@ -81,6 +81,7 @@ const LayerArea = styled.div`
     border: 1px solid #ddd;
     width: 70px;
     text-align: center;
+    z-index: 100;
     &:hover {
         background-color: #dff9fb;
     }
