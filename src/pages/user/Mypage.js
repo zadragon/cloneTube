@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Icon, Item } from 'semantic-ui-react';
 import ModalTemp from '../../components/Modal';
+import MetaTag from '../../components/MetaTag';
 
 const Mypage = () => {
     const [openMadal, setOpenModal] = useState(false);
@@ -15,6 +16,11 @@ const Mypage = () => {
     };
     return (
         <>
+            <MetaTag
+                title="마이페이지 :: LoneTube"
+                description="세계최대 동영상 서비스"
+                keywords="론튜브, 영상, 유튜브"
+            />
             <div className="flex max-w-full gap-3 border-solid border-b border-Slate-600 pt-5 pb-5">
                 <div className="flex flex-col items-center gap-3">
                     <div className="rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500 overflow-hidden">

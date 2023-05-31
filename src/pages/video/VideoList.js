@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { useMutation } from 'react-query';
 import { apiVideo } from '../../api/api';
 import styled from 'styled-components';
+import MetaTag from '../../components/MetaTag';
 
 const VideoList = () => {
     const [cookie] = useCookies();
@@ -20,7 +21,7 @@ const VideoList = () => {
     useEffect(() => {
         console.log('cookie', cookie.token);
         console.log('isLoading', isLoading);
-        console.log('error', error);
+        //console.log('error', error);
 
         getVideoData(cookie.token);
     }, []);
@@ -29,6 +30,7 @@ const VideoList = () => {
 
     //아래로 무한 스크롤관련 코드
     //뷰포트에 타겟이 보이면 api요청 혹은 관련동작을 작동한다.
+
     const target = useRef(null); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
 
     useEffect(() => {
@@ -48,18 +50,25 @@ const VideoList = () => {
     });
 
     return (
-        <div className="flex">
-            <Sidebar />
-            <div style={{ position: 'relative', height: '200vh' }}>
-                <div className="flex">
-                    <VideoCard />
-                    <VideoCard />
-                    <VideoCard />
-                    <VideoCard />
+        <>
+            <MetaTag
+                title="영상보기 :: LoneTube"
+                description="세계최대 동영상 서비스"
+                keywords="론튜브, 영상, 유튜브"
+            />
+            <div className="flex">
+                <Sidebar />
+                <div style={{ position: 'relative', height: '200vh' }}>
+                    <div className="flex">
+                        <VideoCard />
+                        <VideoCard />
+                        <VideoCard />
+                        <VideoCard />
+                    </div>
+                    <InfyScrollTarget ref={target}></InfyScrollTarget>
                 </div>
-                <InfyScrollTarget ref={target}></InfyScrollTarget>
             </div>
-        </div>
+        </>
     );
 };
 

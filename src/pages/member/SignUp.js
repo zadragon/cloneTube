@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { apiUser } from '../../api/api';
+import MetaTag from '../../components/MetaTag';
 
 export default function SignUp() {
     const [inputs, setInputs] = useState({
@@ -59,6 +60,11 @@ export default function SignUp() {
 
     return (
         <>
+            <MetaTag
+                title="회원가입 :: LoneTube"
+                description="세계최대 동영상 서비스"
+                keywords="론튜브, 영상, 유튜브"
+            />
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
