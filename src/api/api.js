@@ -29,7 +29,7 @@ export const apiUser = {
                 navigate('/');
             })
             .catch(error => {
-                alert('error', error.response.data.errorMessage);
+                alert(error.response.data.errorMessage);
             });
     },
 

@@ -28,9 +28,9 @@ const Header = () => {
             </Link>
             <form className="w-full flex justify-center h-11">
                 <input
-                    className="w-7/12 p-1 rounded-full border border-gray-300"
+                    className="w-7/12 p-1 p-3.5 rounded-full border border-gray-300"
                     type="text"
-                    placeholder="    검색"
+                    placeholder="검색"
                     value={text}
                     onChange={onChangeHandler}
                 />
@@ -49,12 +49,11 @@ const Header = () => {
                             />
                         </Link>
                         <LayerArea
-                            className={`text-center ${layerOpen && 'active'}`}
+                            className={layerOpen && 'active'}
                             onMouseLeave={() => setLayerOpen(false)}
+                            onClick={logout}
                         >
-                            <button className=" text-xs" onClick={logout}>
-                                로그아웃
-                            </button>
+                            <button className=" text-xs">로그아웃</button>
                         </LayerArea>
                     </>
                 ) : (
@@ -81,6 +80,7 @@ const LayerArea = styled.div`
     padding: 5px 10px;
     border: 1px solid #ddd;
     width: 70px;
+    text-align: center;
     &:hover {
         background-color: #dff9fb;
     }
