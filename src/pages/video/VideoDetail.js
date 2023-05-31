@@ -1,39 +1,11 @@
 import React, { useEffect } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import CommentBox from '../../components/Comment';
-import { apiUser } from '../../api/api';
-import { useMutation } from 'react-query';
 import VideoCard from '../../components/VideoCard';
 import MetaTag from '../../components/MetaTag';
 import { Link } from 'react-router-dom';
 
 const VideoDetail = () => {
-    const signUpMutation = useMutation(apiUser.userLogin, {
-        onMutate: variable => {
-            console.log('onMutate', variable);
-            // variable : {loginId: 'xxx', password; 'xxx'}
-        },
-        onError: error => {
-            console.log(error);
-            // console.log(variable);
-            // console.log(context);
-            // error
-        },
-        onSuccess: (data, variables, context) => {
-            console.log('success', data, variables, context);
-            console.log(data);
-        },
-        onSettled: () => {
-            console.log('end');
-        },
-    });
-    useEffect(() => {
-        signUpMutation.mutate({
-            UserId: 'hanghae',
-            password: '4321aaaa',
-        });
-    }, []);
-
     return (
         <>
             <MetaTag
@@ -43,7 +15,17 @@ const VideoDetail = () => {
             />
             <div className="flex flex-row flex-auto gap-10">
                 <div className="w-4/5 ">
-                    <div className="videoArea w-full h-96 bg-slate-200 rounded-lg "></div>
+                    <div className="videoArea w-full h-96 bg-slate-200 rounded-lg ">
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src="https://www.youtube.com/embed/gr7J3_eswxU"
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
                     <div className="pt-5">
                         <strong className="text-3xl">제목</strong>
                     </div>
