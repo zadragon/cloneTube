@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { apiUser } from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import MetaTag from '../../components/MetaTag';
 
 export default function Login() {
     const [inputs, setInputs] = useState({
@@ -51,6 +52,7 @@ export default function Login() {
 
     return (
         <>
+            <MetaTag title="로그인 :: LoneTube" description="세계최대 동영상 서비스" keywords="론튜브, 영상, 유튜브" />
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
