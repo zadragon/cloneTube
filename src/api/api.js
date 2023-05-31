@@ -35,19 +35,6 @@ export const apiUser = {
 
     getUserProfile: token => {
         console.log(token);
-
-        // fetch(`${process.env.REACT_APP_HOST}/api/sublist`, {
-        //     headers: {
-        //         Authorization: token,
-        //     },
-        // })
-        //     .then(response => {
-        //         console.log(response);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
-
         return (
             axios
                 //.get(`${process.env.REACT_APP_HOST}/api/profile`)
@@ -64,5 +51,21 @@ export const apiUser = {
                     console.log(error);
                 })
         );
+    },
+};
+
+export const apiVideo = {
+    getVideoList: token => {
+        return axios
+            .post(`${process.env.REACT_APP_HOST}/api/videolist`, {
+                authorization: token,
+            })
+            .then(response => {
+                console.log(response);
+                return response.data;
+            })
+            .catch(error => {
+                console.log(error);
+            });
     },
 };

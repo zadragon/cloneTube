@@ -1,56 +1,27 @@
 import React, { useEffect } from 'react';
 import Sidebar from '../../components/Sidebar';
 import VideoCard from '../../components/VideoCard';
-// import { apiUser } from '../../api/api';
-//import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
+import { useMutation } from 'react-query';
+import { apiVideo } from '../../api/api';
 
 const VideoList = () => {
     const [cookie] = useCookies();
+    const { data, isLoading, error, mutate } = useMutation(payload => {
+        return apiVideo.getVideoList(payload);
+    });
 
     useEffect(() => {
         console.log('cookie', cookie.token);
-        //setCookies('token', cookie.token);
-        //apiUser.getUserProfile(cookie.token);
-        axios
-            .post(`${process.env.REACT_APP_HOST}/api/videolist`, {
-                authorization: cookie.token,
-            })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
-        // fetch(`${process.env.REACT_APP_HOST}/api/sublist`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         authorization: cookie.token,
-        //     }),
-        // });
+        console.log('isLoading', isLoading);
+        console.log('error', error);
+        mutate(cookie.token);
     }, []);
 
-    //const { isLoading, error, data } = useQuery('getdata', apiUser.getUserProfile(cookie.token));
-
-    // const { isLoading, error, data } = useQuery('getdata', () => {
-    //     return axios.get(`${process.env.REACT_APP_HOST}/api/sublist`, {
-    //         headers: {
-    //             "Authorization": cookie.token,
-    //         },
-    //     });
-    // });
-
-    // console.log('isLoading', isLoading);
-    // console.log('error', error);
-    // console.log('data', data);
+    console.log('data', data?.VideoList);
 
     return (
-        <div className="flex">
+        <div className="flex" style={{ display: 'none' }}>
             <Sidebar />
             <div className="flex">
                 <VideoCard />
