@@ -15,7 +15,7 @@ const VideoDetail = () => {
             />
             <div className="flex flex-row flex-auto gap-10">
                 <div className="w-4/5 ">
-                    <div className="videoArea w-full h-96 bg-slate-200 rounded-lg ">
+                    <div className="videoArea w-full h-2/5 bg-slate-200 rounded-lg overflow-hidden">
                         <iframe
                             width="100%"
                             height="100%"
