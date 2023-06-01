@@ -6,6 +6,26 @@ import MetaTag from '../../components/MetaTag';
 import { Link } from 'react-router-dom';
 
 const VideoDetail = () => {
+    // const [cookie] = useCookies();
+    // const {
+    //     data,
+    //     isLoading,
+    //     error,
+    //     mutate: getVideoData,
+    // } = useMutation(payload => {
+    //     return apiVideo.getVideoList(payload);
+    // });
+
+    // useEffect(() => {
+    //     console.log('cookie', cookie.token);
+    //     console.log('isLoading', isLoading);
+    //     //console.log('error', error);
+
+    //     getVideoData(cookie.token);
+    // }, []);
+
+    // console.log('data', data?.VideoList);
+
     return (
         <>
             <MetaTag
@@ -21,7 +41,6 @@ const VideoDetail = () => {
                             height="100%"
                             src="https://www.youtube.com/embed/gr7J3_eswxU"
                             title="YouTube video player"
-                            frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen
                         ></iframe>
@@ -48,11 +67,11 @@ const VideoDetail = () => {
                     <CommentBox />
                 </div>
                 <div>
+                    {/* <VideoCard />
                     <VideoCard />
                     <VideoCard />
                     <VideoCard />
-                    <VideoCard />
-                    <VideoCard />
+                    <VideoCard /> */}
                 </div>
             </div>
         </>
