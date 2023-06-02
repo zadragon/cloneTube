@@ -17,23 +17,23 @@ const VideoList = () => {
     // if (error) return <p>{error}</p>;
     //아래로 무한 스크롤관련 코드
     //뷰포트에 타겟이 보이면 api요청 혹은 관련동작을 작동한다.
-    const target = useRef(null); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
+    // const target = useRef(null); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
 
-    useEffect(() => {
-        observer.observe(target.current); //컴포넌트 렌더링시 타겟 요소 관측 시작
-    }, []);
+    // useEffect(() => {
+    //     observer.observe(target.current); //컴포넌트 렌더링시 타겟 요소 관측 시작
+    // }, []);
 
-    // ✅ 관측되었을 경우 실행할 콜백함수입니다.
-    const callback = () => {
-        target.current.innerText += '관측되었습니다';
-    };
+    // // ✅ 관측되었을 경우 실행할 콜백함수입니다.
+    // const callback = () => {
+    //     target.current.innerText += '관측되었습니다';
+    // };
 
-    // ✅ observer를 선언합니다.
-    // 첫 번째 인자로 관측되었을 경우 실행할 콜백함수를 넣습니다.
-    // 두 번째 인자로 관측에 대한 옵션을 지정합니다.
-    const observer = new IntersectionObserver(callback, {
-        threshold: 0.1,
-    });
+    // // ✅ observer를 선언합니다.
+    // // 첫 번째 인자로 관측되었을 경우 실행할 콜백함수를 넣습니다.
+    // // 두 번째 인자로 관측에 대한 옵션을 지정합니다.
+    // const observer = new IntersectionObserver(callback, {
+    //     threshold: 0.1,
+    // });
 
     return (
         <>
@@ -44,13 +44,13 @@ const VideoList = () => {
             />
             <div className="flex">
                 <Sidebar />
-                <div style={{ position: 'relative', height: '200vh' }}>
+                <div className="w-5/6">
                     <VideoWrap>
                         {data?.data.VideoList.map((videoInfo, idx) => {
                             return <VideoCard key={idx} videoInfo={videoInfo} />;
                         })}
                     </VideoWrap>
-                    <InfyScrollTarget ref={target}></InfyScrollTarget>
+                    {/* <InfyScrollTarget ref={target}></InfyScrollTarget> */}
                 </div>
             </div>
         </>
@@ -76,3 +76,5 @@ const InfyScrollTarget = styled.div`
 `;
 
 export default VideoList;
+
+//
