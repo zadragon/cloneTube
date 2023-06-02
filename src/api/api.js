@@ -66,3 +66,18 @@ export const apiVideo = {
         // });
     },
 };
+
+export const apiSub = {
+    getSubList: token => {
+        return axios
+            .post(`${process.env.REACT_APP_HOST}/api/sublist`, {
+                authorization: token,
+            })
+            .then(response => {
+                return response;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+};

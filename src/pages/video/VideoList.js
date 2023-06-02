@@ -13,7 +13,8 @@ const VideoList = () => {
     console.log(isLoading);
     console.log(error);
     console.log(data?.data.VideoList);
-
+    // if (isLoading) return <p>Loading...</p>;
+    // if (error) return <p>{error}</p>;
     //아래로 무한 스크롤관련 코드
     //뷰포트에 타겟이 보이면 api요청 혹은 관련동작을 작동한다.
     const target = useRef(null); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
