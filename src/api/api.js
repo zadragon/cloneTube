@@ -55,17 +55,14 @@ export const apiUser = {
 };
 
 export const apiVideo = {
-    getVideoList: token => {
-        return axios
-            .post(`${process.env.REACT_APP_HOST}/api/videolist`, {
-                authorization: token,
-            })
-            .then(response => {
-                console.log(response);
-                return response.data;
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    getVideoList: () => {
+        return axios.get(`${process.env.REACT_APP_HOST}/api/videolist`);
+        // .then(response => {
+        //     console.log(response);
+        //     return response.data;
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // });
     },
 };

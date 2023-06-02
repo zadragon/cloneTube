@@ -2,35 +2,20 @@ import React, { useEffect, useRef } from 'react';
 import Sidebar from '../../components/Sidebar';
 import VideoCard from '../../components/VideoCard';
 import { useCookies } from 'react-cookie';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { apiVideo } from '../../api/api';
 import styled from 'styled-components';
 import MetaTag from '../../components/MetaTag';
 
 const VideoList = () => {
-    const [cookie] = useCookies();
-    const {
-        data,
-        isLoading,
-        error,
-        mutate: getVideoData,
-    } = useMutation(payload => {
-        return apiVideo.getVideoList(payload);
-    });
+    const { data, error, isLoading } = useQuery('todos', () => apiVideo.getVideoList());
 
-    useEffect(() => {
-        console.log('cookie', cookie.token);
-        console.log('isLoading', isLoading);
-        //console.log('error', error);
-
-        getVideoData(cookie.token);
-    }, []);
-
-    console.log('data', data?.VideoList);
+    console.log(isLoading);
+    console.log(error);
+    console.log(data?.data.VideoList);
 
     //아래로 무한 스크롤관련 코드
     //뷰포트에 타겟이 보이면 api요청 혹은 관련동작을 작동한다.
-
     const target = useRef(null); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
 
     useEffect(() => {
@@ -59,18 +44,25 @@ const VideoList = () => {
             <div className="flex">
                 <Sidebar />
                 <div style={{ position: 'relative', height: '200vh' }}>
-                    <div className="flex">
-                        <VideoCard />
-                        <VideoCard />
-                        <VideoCard />
-                        <VideoCard />
-                    </div>
+                    <VideoWrap>
+                        {data?.data.VideoList.map((videoInfo, idx) => {
+                            return <VideoCard key={idx} videoInfo={videoInfo} />;
+                        })}
+                    </VideoWrap>
                     <InfyScrollTarget ref={target}></InfyScrollTarget>
                 </div>
             </div>
         </>
     );
 };
+
+const VideoWrap = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    & > a {
+        width: 25%;
+    }
+`;
 
 const InfyScrollTarget = styled.div`
     position: absolute;
