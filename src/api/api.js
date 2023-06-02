@@ -40,7 +40,7 @@ export const apiUser = {
                 //.get(`${process.env.REACT_APP_HOST}/api/profile`)
                 .get(`${process.env.REACT_APP_HOST}/api/sublist`, {
                     headers: {
-                        Authorization: token,
+                        authorization: token,
                     },
                 })
 
@@ -57,12 +57,8 @@ export const apiUser = {
 export const apiVideo = {
     getVideoList: () => {
         return axios.get(`${process.env.REACT_APP_HOST}/api/videolist`);
-        // .then(response => {
-        //     console.log(response);
-        //     return response.data;
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // });
+    },
+    getVideoDetail: id => {
+        return axios.get(`${process.env.REACT_APP_HOST}/api/videoinfo/${id}`);
     },
 };

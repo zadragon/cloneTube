@@ -3,7 +3,9 @@ import { Button, Icon } from 'semantic-ui-react';
 import CommentBox from '../../components/Comment';
 import VideoCard from '../../components/VideoCard';
 import MetaTag from '../../components/MetaTag';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { apiVideo } from '../../api/api';
+import { useQuery } from 'react-query';
 
 const VideoDetail = () => {
     // const [cookie] = useCookies();
@@ -26,6 +28,14 @@ const VideoDetail = () => {
 
     // console.log('data', data?.VideoList);
 
+    const param = useParams();
+    console.log(param.id);
+    const { data, error, isLoading } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
+
+    if (isLoading) return;
+    if (error) return;
+    const { Like, Title, URL, UserId, View } = data.data.movie;
+    console.log(data);
     return (
         <>
             <MetaTag
@@ -39,14 +49,15 @@ const VideoDetail = () => {
                         <iframe
                             width="100%"
                             height="100%"
-                            src="https://www.youtube.com/embed/gr7J3_eswxU"
+                            src="https://www.youtube.com/embed/yDhMmmHZONM"
                             title="YouTube video player"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen
                         ></iframe>
                     </div>
                     <div className="pt-5">
-                        <strong className="text-3xl">제목</strong>
+                        <strong className="text-3xl">{Title}</strong>
+                        <p>조회수 {View}</p>
                     </div>
                     <div className="flex border-b border-Slate-600 pt-5 pb-5 gap-5">
                         <Link to="/user/mypage">
@@ -55,13 +66,16 @@ const VideoDetail = () => {
                             </div>
                         </Link>
                         <div>
-                            <p>채널 이름</p>
-                            <p>구독자 수 </p>
+                            <p>채널명 {UserId}</p>
+                            <p>구독자 수 {}</p>
                         </div>
                         <div>
                             <Button color="youtube">
                                 <Icon name="youtube" /> 구독
                             </Button>
+                        </div>
+                        <div className="flex items-center text-lg">
+                            <button>👍 좋아요 {Like}</button>
                         </div>
                     </div>
                     <CommentBox />
