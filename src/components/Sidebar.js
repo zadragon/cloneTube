@@ -28,7 +28,7 @@ export default function Sidebar() {
     return (
         <div className="mr-4 w-1/6">
             <h1 className="mb-5 font-semibold text-xl">구독</h1>
-            {data?.data.SubList.map((idx, subInfo) => {
+            {data?.data.SubList.map((subInfo, idx) => {
                 return <SubCard key={idx} subInfo={subInfo} />;
             })}
         </div>
