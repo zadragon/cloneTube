@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import CommentBox from '../../components/Comment';
 import VideoCard from '../../components/VideoCard';
@@ -7,12 +7,16 @@ import { Link, useParams } from 'react-router-dom';
 import { apiUser, apiVideo } from '../../api/api';
 import { useMutation, useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
+import styled from 'styled-components';
 
 const VideoDetail = () => {
     const param = useParams();
     const [cookie] = useCookies();
     const { data, error, isLoading } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
-
+    const [videos, setVideos] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
     const {
         dataProfile,
         errorProfile,
@@ -28,6 +32,41 @@ const VideoDetail = () => {
     if (error) return;
     const { Like, Title, URL, View } = data.data.movie;
     const { SubscriptCount, UserId, UserImage } = data.data.User_Info;
+
+    const getVideos = async page => {
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
+        console.log('data', res);
+        setVideos(prev => [...prev, ...res.data.VideoList]);
+        setLoading(true);
+    };
+
+    useEffect(() => {
+        getVideos(page);
+    }, [page]);
+
+    const loadMore = () => {
+        setPage(prev => prev + 1);
+    };
+
+    const target = useRef(); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
+
+    useEffect(() => {
+        if (loading) {
+            //로딩되었을 때만 실행
+            const observer = new IntersectionObserver(
+                entries => {
+                    if (entries[0].isIntersecting) {
+                        loadMore();
+                    }
+                },
+                { threshold: 1 }
+            );
+            //옵져버 탐색 시작
+            observer.observe(target.current);
+        }
+    }, [loading]);
+
+    console.log('videos', videos);
 
     return (
         <>
@@ -73,12 +112,14 @@ const VideoDetail = () => {
                     </div>
                     <CommentBox />
                 </div>
-                <div>
-                    {/* <VideoCard />
-                    <VideoCard />
-                    <VideoCard />
-                    <VideoCard />
-                    <VideoCard /> */}
+
+                <div className="relative">
+                    <div className="flex-col">
+                        {videos?.map((videoInfo, idx) => {
+                            return <VideoCard key={idx} videoInfo={videoInfo} />;
+                        })}
+                    </div>
+                    <InfyScrollTarget ref={target}></InfyScrollTarget>
                 </div>
             </div>
         </>
@@ -86,3 +127,13 @@ const VideoDetail = () => {
 };
 
 export default VideoDetail;
+
+const InfyScrollTarget = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+    height: 250px;
+    background-color: aliceblue;
+    opacity: 0.9;
+`;

@@ -25,7 +25,7 @@ export default function Sidebar() {
         getSubData(cookie.token);
     }, []);
 
-    console.log('data', data);
+    console.log('sublistdata', data);
 
     return (
         <div className="w-1/6">
