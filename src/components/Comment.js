@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Comment, Header } from 'semantic-ui-react';
 import { apiVideo } from '../api/api';
 import { QueryClient, useMutation, useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 
@@ -61,18 +61,28 @@ const CommentBox = () => {
                 <Header as="h3" dividing>
                     댓글 {commentCount}개
                 </Header>
-
-                <form onSubmit={e => addCommentAction(e)}>
-                    <div className="pb-10">
-                        <textarea
-                            className="w-full h-24 border-solid border border-Slate-600"
-                            name="Comment"
-                            value={inputs}
-                            onChange={onChangeHandler}
-                        />
-                        <Button content="Add Reply" labelPosition="left" icon="edit" color="youtube" />
+                {cookie.token ? (
+                    <form onSubmit={e => addCommentAction(e)}>
+                        <div className="pb-10">
+                            <textarea
+                                className="w-full h-24 border-solid border border-Slate-600"
+                                name="Comment"
+                                value={inputs}
+                                onChange={onChangeHandler}
+                            />
+                            <Button content="Add Reply" labelPosition="left" icon="edit" color="youtube" />
+                        </div>
+                    </form>
+                ) : (
+                    <div className="py-10 text-center text-base">
+                        댓글을 작성하시려면{' '}
+                        <Link to="/member/login" className="text-blue-500 underline">
+                            로그인
+                        </Link>{' '}
+                        해주세요.
                     </div>
-                </form>
+                )}
+
                 {comments.length === 0 ? (
                     <EmptyComment>댓글이 아직 없습니다.</EmptyComment>
                 ) : (
@@ -91,40 +101,6 @@ const CommentBox = () => {
                         );
                     })
                 )}
-                {/* <Comment>
-                    <Comment.Avatar src="/img/user/matt.jpg" />
-                    <Comment.Content>
-                        <Comment.Author as="a">Matt</Comment.Author>
-                        <Comment.Metadata>
-                            <div>Today at 5:42PM</div>
-                        </Comment.Metadata>
-                        <Comment.Text>How artistic!</Comment.Text>
-                    </Comment.Content>
-                </Comment>
-
-                <Comment>
-                    <Comment.Avatar src="/img/user/elliot.jpg" />
-                    <Comment.Content>
-                        <Comment.Author as="a">Elliot Fu</Comment.Author>
-                        <Comment.Metadata>
-                            <div>Yesterday at 12:30AM</div>
-                        </Comment.Metadata>
-                        <Comment.Text>
-                            <p>This has been very useful for my research. Thanks as well!</p>
-                        </Comment.Text>
-                    </Comment.Content>
-                </Comment>
-
-                <Comment>
-                    <Comment.Avatar src="/img/user/joe.jpg" />
-                    <Comment.Content>
-                        <Comment.Author as="a">Joe Henderson</Comment.Author>
-                        <Comment.Metadata>
-                            <div>5 days ago</div>
-                        </Comment.Metadata>
-                        <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-                    </Comment.Content>
-                </Comment> */}
             </Comment.Group>
         </div>
     );

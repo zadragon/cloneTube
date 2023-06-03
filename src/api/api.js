@@ -38,7 +38,6 @@ export const apiUser = {
             authorization: token,
         };
 
-        console.log(payload);
         return (
             axios
                 //.get(`${process.env.REACT_APP_HOST}/api/profile`)
@@ -67,6 +66,12 @@ export const apiVideo = {
     addComment: payload => {
         const { id, commentInfo } = payload;
         return axios.post(`${process.env.REACT_APP_HOST}/api/${id}/comment`, commentInfo).then(response => {
+            console.log(response);
+        });
+    },
+    addSubscribe: payload => {
+        console.log(payload);
+        return axios.post(`${process.env.REACT_APP_HOST}/api/subscript`, payload).then(response => {
             console.log(response);
         });
     },

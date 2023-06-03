@@ -21,13 +21,31 @@ const VideoDetail = () => {
     } = useMutation('getProfile', payload => apiUser.getUserProfile(payload));
 
     useEffect(() => {
-        getProfileAction(cookie.token);
+        if (cookie.token) {
+            const payload = {
+                token: { authorization: cookie.token },
+                id: param.id,
+            };
+            getProfileAction(payload);
+        }
     }, []);
+
+    const addSubscribeAction = () => {
+        const payload = {
+            userId: stringId,
+            authorization: cookie.token,
+        };
+        if (cookie.token) {
+            apiVideo.addSubscribe(payload);
+        } else {
+            alert('구독은 로그인을 해주세요.');
+        }
+    };
 
     if (isLoading) return;
     if (error) return;
-    const { Like, Title, URL, View } = data.data.movie;
-    const { SubscriptCount, UserId, UserImage } = data.data.User_Info;
+    const { Like, Title, URL, View, UserId: numberId } = data.data.movie;
+    const { SubscriptCount, UserId: stringId, UserImage } = data.data.User_Info;
 
     return (
         <>
@@ -59,11 +77,11 @@ const VideoDetail = () => {
                             </div>
                         </Link>
                         <div>
-                            <p className="font-bold text-xl">{UserId}</p>
+                            <p className="font-bold text-xl">{numberId}</p>
                             <p>구독자 {SubscriptCount}명</p>
                         </div>
                         <div>
-                            <Button color="youtube">
+                            <Button color="youtube" onClick={addSubscribeAction}>
                                 <Icon name="youtube" /> 구독
                             </Button>
                         </div>
