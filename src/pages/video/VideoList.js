@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import VideoCard from '../../components/VideoCard';
 import { useCookies } from 'react-cookie';
@@ -6,33 +6,47 @@ import { useMutation, useQuery } from 'react-query';
 import { apiVideo } from '../../api/api';
 import styled from 'styled-components';
 import MetaTag from '../../components/MetaTag';
+import axios from 'axios';
 
 const VideoList = () => {
-    const { data, error, isLoading } = useQuery('todos', () => apiVideo.getVideoList());
+    const [videos, setVideos] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    console.log(isLoading);
-    console.log(error);
-    console.log(data?.data.VideoList);
-
-    //아래로 무한 스크롤관련 코드
-    //뷰포트에 타겟이 보이면 api요청 혹은 관련동작을 작동한다.
-    const target = useRef(null); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
-
-    useEffect(() => {
-        observer.observe(target.current); //컴포넌트 렌더링시 타겟 요소 관측 시작
-    }, []);
-
-    // ✅ 관측되었을 경우 실행할 콜백함수입니다.
-    const callback = () => {
-        target.current.innerText += '관측되었습니다';
+    const getVideos = async page => {
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
+        console.log('data', res);
+        setVideos(prev => [...prev, ...res.data.VideoList]);
+        setLoading(true);
     };
 
-    // ✅ observer를 선언합니다.
-    // 첫 번째 인자로 관측되었을 경우 실행할 콜백함수를 넣습니다.
-    // 두 번째 인자로 관측에 대한 옵션을 지정합니다.
-    const observer = new IntersectionObserver(callback, {
-        threshold: 0.1,
-    });
+    useEffect(() => {
+        getVideos(page);
+    }, [page]);
+
+    const loadMore = () => {
+        setPage(prev => prev + 1);
+    };
+
+    const target = useRef(); //타겟 설정을 위한 useRef -> 타겟에 레퍼런스를 설정한다.
+
+    useEffect(() => {
+        if (loading) {
+            //로딩되었을 때만 실행
+            const observer = new IntersectionObserver(
+                entries => {
+                    if (entries[0].isIntersecting) {
+                        loadMore();
+                    }
+                },
+                { threshold: 1 }
+            );
+            //옵져버 탐색 시작
+            observer.observe(target.current);
+        }
+    }, [loading]);
+
+    console.log('videos', videos);
 
     return (
         <>
@@ -43,9 +57,9 @@ const VideoList = () => {
             />
             <div className="flex">
                 <Sidebar />
-                <div style={{ position: 'relative', height: '200vh' }}>
+                <div className="w-5/6 relative">
                     <VideoWrap>
-                        {data?.data.VideoList.map((videoInfo, idx) => {
+                        {videos?.map((videoInfo, idx) => {
                             return <VideoCard key={idx} videoInfo={videoInfo} />;
                         })}
                     </VideoWrap>
@@ -75,3 +89,5 @@ const InfyScrollTarget = styled.div`
 `;
 
 export default VideoList;
+
+//

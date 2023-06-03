@@ -28,7 +28,7 @@ const Header = () => {
             </Link>
             <form className="w-full flex justify-center h-11">
                 <input
-                    className="w-7/12 p-1 p-3.5 rounded-full border border-gray-300"
+                    className="w-7/12 p-3.5 rounded-full border border-gray-300"
                     type="text"
                     placeholder="검색"
                     value={text}
