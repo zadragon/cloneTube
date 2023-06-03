@@ -33,24 +33,15 @@ export const apiUser = {
             });
     },
 
-    getUserProfile: token => {
-        const payload = {
-            authorization: token,
-        };
-
-        console.log(payload);
-        return (
-            axios
-                //.get(`${process.env.REACT_APP_HOST}/api/profile`)
-                .post(`${process.env.REACT_APP_HOST}/api/profile`, payload)
-                .then(response => {
-                    console.log(response);
-                    return response;
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        );
+    getUserProfile: payload => {
+        return axios
+            .post(`${process.env.REACT_APP_HOST}/api/profile`, payload.token)
+            .then(response => {
+                return response;
+            })
+            .catch(error => {
+                console.log(error);
+            });
     },
 };
 
@@ -70,8 +61,14 @@ export const apiVideo = {
             console.log(response);
         });
     },
-    searchVideo: payload => {
-        return axios.post(`${process.env.REACT_APP_HOST}/api/search`, payload).then(response => {
+    addSubscribe: payload => {
+        console.log(payload);
+        return axios.post(`${process.env.REACT_APP_HOST}/api/subscript`, payload).then(response => {
+            console.log(response);
+        });
+    },
+    videoUpload: payload => {
+        axios.post(`${process.env.REACT_APP_HOST}/api/upload`, payload).then(response => {
             console.log(response);
         });
     },
