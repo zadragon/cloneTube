@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiFillYoutube, AiOutlineSearch } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Avatar from '@mui/material/Avatar';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { filteredVideos } from '../redux/modules/FilteredSlice';
 
 const Header = () => {
-    const [text, setText] = useState('');
+    const [search, setSearch] = useState('');
     const [layerOpen, setLayerOpen] = useState(false);
     const [cookie, setCookie, removeCookie] = useCookies(['token']);
-    const onChangeHandler = e => setText(e.target.value);
 
     const logout = () => {
         const result = confirm('정말 로그아웃 하시겠습니까? 🤔');
@@ -31,8 +32,8 @@ const Header = () => {
                     className="w-7/12 p-3.5 rounded-full border border-gray-300"
                     type="text"
                     placeholder="검색"
-                    value={text}
-                    onChange={onChangeHandler}
+                    value={search}
+                    onChange={e => setSearch(e.target.value.toLowerCase())}
                 />
                 <button>
                     <AiOutlineSearch className="flex text-3xl ml-2 text-gray-500" />
