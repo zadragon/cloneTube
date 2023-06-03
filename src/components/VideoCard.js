@@ -13,10 +13,10 @@ export default function VideoCard({ videoInfo }) {
                     <div>
                         <p className="font-semibold my-px">{Title}</p>
                         <p className="text-xs text-gray-500">
-                            채널 이름 <strong> {UserId}</strong>
+                            <strong> {UserId}</strong>
                         </p>
                         <p className="text-xs text-gray-500">
-                            조회수 <strong>{View}</strong>
+                            <span>조회수 {View}회</span>
                         </p>
                     </div>
                 </div>
