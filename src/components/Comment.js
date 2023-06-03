@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Comment, Header } from 'semantic-ui-react';
 import { apiVideo } from '../api/api';
-import { useMutation, useQuery } from 'react-query';
+import { QueryClient, useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
@@ -9,30 +9,27 @@ import { useCookies } from 'react-cookie';
 const CommentBox = () => {
     const [cookie] = useCookies();
     const param = useParams();
-
+    const queryClient = new QueryClient();
+    const [inputs, setInputs] = useState('');
+    const { data, error, isLoading } = useQuery('getCommentList', () => apiVideo.getCommentList(param.id));
     const {
         dataComment,
         isLoadingComment,
         errorComment,
         mutate: addCommentData,
-    } = useMutation(payload => {
-        console.log('mutation', payload);
-        return apiVideo.addComment(payload);
-    });
-
-    const [commentData, setCommentData] = useState([]);
-    const { data, error, isLoading, refetch } = useQuery(['getCommentList', commentData], () =>
-        apiVideo.getCommentList(param.id)
+    } = useMutation(
+        payload => {
+            return apiVideo.addComment(payload);
+        },
+        {
+            onSuccess: () => {
+                // Invalidate and refresh
+                // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                // invalidate 할 수 있어요.
+                queryClient.invalidateQueries('getCommentList');
+            },
+        }
     );
-
-    // useEffect(() => {
-    //     console.log('cookie', cookie.token);
-    //     console.log('isLoading', isLoading);
-    //     //console.log('error', error);
-
-    //     addComment(cookie.token);
-    // }, []);
-    console.log(refetch);
 
     const addCommentAction = e => {
         e.preventDefault();
@@ -41,19 +38,22 @@ const CommentBox = () => {
             id: param.id,
             commentInfo: {
                 authorization: cookie.token,
-                commentText: '댓글확인중ㅎㅎ222333',
+                commentText: inputs,
             },
         };
-        console.log('click', commentPayload);
+        if (inputs == '') alert('댓글을 입력해주세요.');
         addCommentData(commentPayload);
-        setCommentData(commentPayload);
     };
 
-    if (isLoading) return;
-    if (error) return;
-    const { commentCount, comments } = data.data;
+    /* 아이디 비밀번호 setInput */
+    const onChangeHandler = e => {
+        const { value } = e.target; // 우선 e.target 에서 name 과 value 를 추출
+        setInputs(value);
+    };
 
-    console.log(comments);
+    if (isLoading || isLoadingComment) return;
+    if (error || errorComment) return;
+    const { commentCount, comments } = data.data;
 
     return (
         <div className="w-full pt-10">
@@ -64,7 +64,12 @@ const CommentBox = () => {
 
                 <form onSubmit={e => addCommentAction(e)}>
                     <div className="pb-10">
-                        <textarea className="w-full h-24 border-solid border border-Slate-600" />
+                        <textarea
+                            className="w-full h-24 border-solid border border-Slate-600"
+                            name="Comment"
+                            value={inputs}
+                            onChange={onChangeHandler}
+                        />
                         <Button content="Add Reply" labelPosition="left" icon="edit" color="youtube" />
                     </div>
                 </form>

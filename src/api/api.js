@@ -34,18 +34,18 @@ export const apiUser = {
     },
 
     getUserProfile: token => {
-        console.log(token);
+        const payload = {
+            authorization: token,
+        };
+
+        console.log(payload);
         return (
             axios
                 //.get(`${process.env.REACT_APP_HOST}/api/profile`)
-                .get(`${process.env.REACT_APP_HOST}/api/sublist`, {
-                    headers: {
-                        authorization: token,
-                    },
-                })
-
+                .post(`${process.env.REACT_APP_HOST}/api/profile`, payload)
                 .then(response => {
                     console.log(response);
+                    return response;
                 })
                 .catch(error => {
                     console.log(error);

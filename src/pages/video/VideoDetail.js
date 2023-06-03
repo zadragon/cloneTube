@@ -4,32 +4,25 @@ import CommentBox from '../../components/Comment';
 import VideoCard from '../../components/VideoCard';
 import MetaTag from '../../components/MetaTag';
 import { Link, useParams } from 'react-router-dom';
-import { apiVideo } from '../../api/api';
-import { useQuery } from 'react-query';
+import { apiUser, apiVideo } from '../../api/api';
+import { useMutation, useQuery } from 'react-query';
+import { useCookies } from 'react-cookie';
 
 const VideoDetail = () => {
-    // const [cookie] = useCookies();
-    // const {
-    //     data,
-    //     isLoading,
-    //     error,
-    //     mutate: getVideoData,
-    // } = useMutation(payload => {
-    //     return apiVideo.getVideoList(payload);
-    // });
-
-    // useEffect(() => {
-    //     console.log('cookie', cookie.token);
-    //     console.log('isLoading', isLoading);
-    //     //console.log('error', error);
-
-    //     getVideoData(cookie.token);
-    // }, []);
-
-    // console.log('data', data?.VideoList);
-
     const param = useParams();
+    const [cookie] = useCookies();
     const { data, error, isLoading } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
+
+    const {
+        dataProfile,
+        errorProfile,
+        isLoadingProfile,
+        mutate: getProfileAction,
+    } = useMutation('getProfile', payload => apiUser.getUserProfile(payload));
+
+    useEffect(() => {
+        getProfileAction(cookie.token);
+    }, []);
 
     if (isLoading) return;
     if (error) return;
@@ -45,10 +38,10 @@ const VideoDetail = () => {
             />
             <div className="flex flex-row flex-auto gap-10">
                 <div className="w-4/5 ">
-                    <div className="videoArea w-full h-2/5 bg-slate-200 rounded-lg overflow-hidden">
+                    <div className="videoArea w-full h-96 bg-slate-200 rounded-lg overflow-hidden">
                         <iframe
                             width="100%"
-                            height="500px"
+                            height="100%"
                             src={`https://www.youtube.com/embed/${URL}`}
                             title="YouTube video player"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
