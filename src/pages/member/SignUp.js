@@ -103,6 +103,7 @@ export default function SignUp() {
                                     id="password"
                                     label="비밀번호"
                                     name="password"
+                                    type="password"
                                     value={inputs.payload.password}
                                     onChange={onChangeHandler}
                                     autoComplete="off"
