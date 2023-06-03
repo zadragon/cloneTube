@@ -29,13 +29,13 @@ const VideoDetail = () => {
     // console.log('data', data?.VideoList);
 
     const param = useParams();
-    console.log(param.id);
     const { data, error, isLoading } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
 
     if (isLoading) return;
     if (error) return;
-    const { Like, Title, URL, UserId, View } = data.data.movie;
-    console.log(data);
+    const { Like, Title, URL, View } = data.data.movie;
+    const { SubscriptCount, UserId, UserImage } = data.data.User_Info;
+
     return (
         <>
             <MetaTag
@@ -48,11 +48,11 @@ const VideoDetail = () => {
                     <div className="videoArea w-full h-2/5 bg-slate-200 rounded-lg overflow-hidden">
                         <iframe
                             width="100%"
-                            height="100%"
-                            src="https://www.youtube.com/embed/yDhMmmHZONM"
+                            height="500px"
+                            src={`https://www.youtube.com/embed/${URL}`}
                             title="YouTube video player"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
+                            //allowfullscreen
                         ></iframe>
                     </div>
                     <div className="pt-5">
@@ -62,12 +62,12 @@ const VideoDetail = () => {
                     <div className="flex border-b border-Slate-600 pt-5 pb-5 gap-5">
                         <Link to="/user/mypage">
                             <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
-                                <img src="/img/user/molly.png" />
+                                <img src={UserImage == null ? `/img/user/molly.png` : UserImage} />
                             </div>
                         </Link>
                         <div>
-                            <p>채널명 {UserId}</p>
-                            <p>구독자 수 {}</p>
+                            <p className="font-bold text-xl">{UserId}</p>
+                            <p>구독자 {SubscriptCount}명</p>
                         </div>
                         <div>
                             <Button color="youtube">

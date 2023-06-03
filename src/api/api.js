@@ -61,4 +61,13 @@ export const apiVideo = {
     getVideoDetail: id => {
         return axios.get(`${process.env.REACT_APP_HOST}/api/videoinfo/${id}`);
     },
+    getCommentList: id => {
+        return axios.get(`${process.env.REACT_APP_HOST}/api/${id}/comment`);
+    },
+    addComment: payload => {
+        const { id, commentInfo } = payload;
+        return axios.post(`${process.env.REACT_APP_HOST}/api/${id}/comment`, commentInfo).then(response => {
+            console.log(response);
+        });
+    },
 };
