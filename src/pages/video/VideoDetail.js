@@ -17,22 +17,6 @@ const VideoDetail = () => {
     const [videos, setVideos] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
-    const {
-        dataProfile,
-        errorProfile,
-        isLoadingProfile,
-        mutate: getProfileAction,
-    } = useMutation('getProfile', payload => apiUser.getUserProfile(payload));
-
-    useEffect(() => {
-        if (cookie.token) {
-            const payload = {
-                token: { authorization: cookie.token },
-                id: param.id,
-            };
-            getProfileAction(payload);
-        }
-    }, []);
 
     const addSubscribeAction = () => {
         const payload = {
@@ -45,11 +29,6 @@ const VideoDetail = () => {
             alert('구독은 로그인을 해주세요.');
         }
     };
-
-    if (isLoading) return;
-    if (error) return;
-    const { Like, Title, URL, View, UserId: numberId } = data.data.movie;
-    const { SubscriptCount, UserId: stringId, UserImage } = data.data.User_Info;
 
     const getVideos = async page => {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
@@ -85,6 +64,12 @@ const VideoDetail = () => {
     }, [loading]);
 
     console.log('videos', videos);
+
+    if (isLoading) return;
+    if (error) return;
+
+    const { Like, Title, URL, View, UserId: numberId } = data.data.movie;
+    const { SubscriptCount, UserId: stringId, UserImage } = data.data.User_Info;
 
     return (
         <>
