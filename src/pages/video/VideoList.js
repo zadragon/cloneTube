@@ -7,11 +7,13 @@ import { apiVideo } from '../../api/api';
 import styled from 'styled-components';
 import MetaTag from '../../components/MetaTag';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const VideoList = () => {
     const [videos, setVideos] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const { searchword } = useParams();
 
     const getVideos = async page => {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
