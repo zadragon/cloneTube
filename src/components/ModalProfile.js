@@ -18,21 +18,18 @@ function ModalProfile({ open, setOpen, getProfileAction, dataProfile }) {
         const reader = new FileReader();
         reader.readAsDataURL(img);
         reader.onloadend = () => {
-            console.log('reader.result', reader.result);
             setImgSendData({ ...imgSendData, authorization: cookie.token, thumbnail: reader.result });
         };
     };
 
     const onSubmit = () => {
         apiUser.addUserProfileImg(imgSendData);
+
         const payload = {
             token: { authorization: cookie.token },
             id: param.id,
         };
-
-        getProfileAction(payload, {
-            onSuccess: () => {},
-        });
+        getProfileAction(payload);
 
         alert('등록 되었습니다.');
         setOpen(false);

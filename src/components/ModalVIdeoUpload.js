@@ -44,64 +44,62 @@ function ModalVIdeoUpload({ open, setOpen, UserId }) {
     return (
         <Modal open={open}>
             <Modal.Header>영상 업로드</Modal.Header>
-            <form>
-                <Modal.Content image>
-                    <Image size="medium" src="/img/empty.png" wrapped />
-                    <Modal.Description style={{ flex: '1 1 auto' }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="title"
-                                    required
-                                    fullWidth
-                                    id="UserId"
-                                    label="제목"
-                                    autoFocus
-                                    value={videoInfo.title}
-                                    onChange={onChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="URL"
-                                    required
-                                    fullWidth
-                                    id="UserId"
-                                    label="유튜브 url"
-                                    value={videoInfo.URL}
-                                    onChange={onChange}
-                                    autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <label className="mr-3">썸네일 선택</label>
-                                <input
-                                    type="file"
-                                    ref={imgRef}
-                                    accept="image/jpg,impge/png,image/jpeg,image/gif"
-                                    name="profile_img"
-                                    onChange={onChangeImg}
-                                />
-                            </Grid>
+            <Modal.Content image>
+                <Image size="medium" src={videoInfo.thumbnail || '/img/empty.png'} wrapped />
+                <Modal.Description style={{ flex: '1 1 auto' }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoComplete="given-name"
+                                name="title"
+                                required
+                                fullWidth
+                                id="UserId"
+                                label="제목"
+                                autoFocus
+                                value={videoInfo.title}
+                                onChange={onChange}
+                            />
                         </Grid>
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button type="button" color="black" onClick={() => setOpen(false)}>
-                        취소
-                    </Button>
-                    <Button
-                        content="등록"
-                        labelPosition="right"
-                        icon="checkmark"
-                        type="submit"
-                        onClick={onSubmit}
-                        positive
-                    />
-                </Modal.Actions>
-            </form>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoComplete="given-name"
+                                name="URL"
+                                required
+                                fullWidth
+                                id="UserId"
+                                label="유튜브 url"
+                                value={videoInfo.URL}
+                                onChange={onChange}
+                                autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <label className="mr-3">썸네일 선택</label>
+                            <input
+                                type="file"
+                                accept="image/jpg,image/png,image/jpeg,image/gif"
+                                ref={imgRef}
+                                name="profile_img"
+                                onChange={onChangeImg}
+                            />
+                        </Grid>
+                    </Grid>
+                </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button type="button" color="black" onClick={() => setOpen(false)}>
+                    취소
+                </Button>
+                <Button
+                    content="등록"
+                    labelPosition="right"
+                    icon="checkmark"
+                    type="submit"
+                    onClick={onSubmit}
+                    positive
+                />
+            </Modal.Actions>
         </Modal>
     );
 }

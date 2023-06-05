@@ -4,8 +4,10 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Avatar from '@mui/material/Avatar';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+    const profileImgData = useSelector(state => state.profileImgState);
     const [search, setSearch] = useState('');
     const [layerOpen, setLayerOpen] = useState(false);
     const [cookie, setCookie, removeCookie] = useCookies(['token']);
@@ -50,10 +52,11 @@ const Header = () => {
                 {cookie.token ? (
                     <>
                         <Link to="/user/mypage" onMouseEnter={() => setLayerOpen(true)}>
+                            {/* <img src={profileImgData.profileImg} alt="" /> */}
                             <Avatar
                                 sx={{ m: 1, bgcolor: 'lightgray', width: 32, height: 32 }}
-                                src="/broken-image.jpg"
-                                className="flex-end ml-4"
+                                src={profileImgData.profileImg || '/broken-image.jpg'}
+                                className="flex-end ml-4 "
                             />
                         </Link>
                         <LayerArea
