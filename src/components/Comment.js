@@ -11,7 +11,13 @@ const CommentBox = () => {
     const param = useParams();
     const queryClient = new QueryClient();
     const [inputs, setInputs] = useState('');
-    const { data, error, isLoading } = useQuery('getCommentList', () => apiVideo.getCommentList(param.id));
+    const {
+        data,
+        error,
+        isLoading,
+        refetch: getCommentRefetch,
+    } = useQuery('getCommentList', () => apiVideo.getCommentList(param.id));
+
     const {
         dataComment,
         isLoadingComment,
@@ -26,7 +32,8 @@ const CommentBox = () => {
                 // Invalidate and refresh
                 // 이렇게 하면, todos라는 이름으로 만들었던 query를
                 // invalidate 할 수 있어요.
-                queryClient.invalidateQueries('getCommentList');
+                // queryClient.invalidateQueries({ queryKey: ['getCommentList'] });
+                getCommentRefetch();
             },
         }
     );
@@ -42,7 +49,16 @@ const CommentBox = () => {
             },
         };
         if (inputs == '') alert('댓글을 입력해주세요.');
-        addCommentData(commentPayload);
+        addCommentData(commentPayload, {
+            onSuccess: () => {
+                // Invalidate and refresh
+                // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                // invalidate 할 수 있어요.
+                //queryClient.invalidateQueries({ queryKey: ['getCommentList'] });
+                getCommentRefetch();
+                setInputs('');
+            },
+        });
     };
 
     /* 아이디 비밀번호 setInput */

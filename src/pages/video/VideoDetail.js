@@ -30,6 +30,13 @@ const VideoDetail = () => {
         }
     };
 
+    const addLikeAction = () => {
+        const payload = {
+            MovieId: param.id,
+        };
+        apiVideo.addLike(payload);
+    };
+
     const getVideos = async page => {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
         console.log('data', res);
@@ -109,7 +116,7 @@ const VideoDetail = () => {
                                 <Icon name="youtube" /> 구독
                             </Button>
                         </div>
-                        <div className="flex items-center text-lg">
+                        <div className="flex items-center text-lg" onClick={addLikeAction}>
                             <button>👍 좋아요 {Like}</button>
                         </div>
                     </div>

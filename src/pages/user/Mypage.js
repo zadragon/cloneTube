@@ -4,7 +4,7 @@ import ModalVIdeoUpload from '../../components/ModalVIdeoUpload';
 import ModalProfile from '../../components/ModalProfile';
 import MetaTag from '../../components/MetaTag';
 import { apiUser } from '../../api/api';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
 
@@ -35,6 +35,13 @@ const Mypage = () => {
         mutate: getProfileAction,
     } = useMutation('getProfile', payload => apiUser.getUserProfile(payload));
 
+    const {
+        data: videoData,
+        error,
+        isLoading,
+        refetch: getCommentRefetch,
+    } = useQuery('getMyVideo', () => apiUser.getMyVideo({ authorization: cookie.token }));
+
     useEffect(() => {
         if (cookie.token) {
             const payload = {
@@ -49,10 +56,10 @@ const Mypage = () => {
         }
     }, []);
 
-    console.log(isLoadingProfile);
-    console.log(errorProfile);
-    console.log(dataProfile);
-    console.log(profileState);
+    // console.log(isLoadingProfile);
+    // console.log(errorProfile);
+    // console.log(dataProfile);
+    // console.log(profileState);
 
     //console.log(dataProfile.data);
 
@@ -92,25 +99,19 @@ const Mypage = () => {
                 </div>
                 <div className="pb-5">
                     <Item.Group>
-                        <Item>
-                            <Item.Image size="tiny" src="/img/image.png" />
+                        {videoData?.data.VideoList.map((item, idx) => {
+                            return (
+                                <Item key={idx}>
+                                    <Item.Image size="tiny" src={item.ThumbNail} />
 
-                            <Item.Content>
-                                <Item.Header as="a">영상제목</Item.Header>
-                                <Item.Meta>조회수</Item.Meta>
-                                <Item.Description>Description</Item.Description>
-                            </Item.Content>
-                        </Item>
-
-                        <Item>
-                            <Item.Image size="tiny" src="/img/image.png" />
-
-                            <Item.Content>
-                                <Item.Header as="a">영상제목</Item.Header>
-                                <Item.Meta>조회수</Item.Meta>
-                                <Item.Description>Description</Item.Description>
-                            </Item.Content>
-                        </Item>
+                                    <Item.Content>
+                                        <Item.Header as="a">{item.Title}</Item.Header>
+                                        <Item.Meta>{item.View}</Item.Meta>
+                                        <Item.Description>Description</Item.Description>
+                                    </Item.Content>
+                                </Item>
+                            );
+                        })}
                     </Item.Group>
                 </div>
             </div>
