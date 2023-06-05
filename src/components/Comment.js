@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Comment, Header } from 'semantic-ui-react';
 import { apiVideo } from '../api/api';
-import { QueryClient, useMutation, useQuery } from 'react-query';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
@@ -9,7 +9,8 @@ import { useCookies } from 'react-cookie';
 const CommentBox = () => {
     const [cookie] = useCookies();
     const param = useParams();
-    const queryClient = new QueryClient();
+    //const queryClient = new QueryClient();
+    const queryClient = useQueryClient();
     const [inputs, setInputs] = useState('');
     const {
         data,
@@ -32,8 +33,8 @@ const CommentBox = () => {
                 // Invalidate and refresh
                 // 이렇게 하면, todos라는 이름으로 만들었던 query를
                 // invalidate 할 수 있어요.
-                // queryClient.invalidateQueries({ queryKey: ['getCommentList'] });
-                getCommentRefetch();
+                queryClient.invalidateQueries({ queryKey: ['getCommentList'] });
+                //getCommentRefetch();
             },
         }
     );
@@ -54,8 +55,8 @@ const CommentBox = () => {
                 // Invalidate and refresh
                 // 이렇게 하면, todos라는 이름으로 만들었던 query를
                 // invalidate 할 수 있어요.
-                //queryClient.invalidateQueries({ queryKey: ['getCommentList'] });
-                getCommentRefetch();
+                queryClient.invalidateQueries({ queryKey: ['getCommentList'] });
+                //getCommentRefetch();
                 setInputs('');
             },
         });

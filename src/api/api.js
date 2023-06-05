@@ -50,7 +50,7 @@ export const apiUser = {
 
     addUserProfileImg: payload => {
         return axios
-            .post(`${process.env.REACT_APP_HOST}/api/profile`, payload)
+            .put(`${process.env.REACT_APP_HOST}/api/profile`, payload)
             .then(response => {
                 console.log(response);
                 return response;
