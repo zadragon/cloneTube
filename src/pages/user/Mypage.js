@@ -4,19 +4,19 @@ import ModalVIdeoUpload from '../../components/ModalVIdeoUpload';
 import ModalProfile from '../../components/ModalProfile';
 import MetaTag from '../../components/MetaTag';
 import { apiUser } from '../../api/api';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
 
 const Mypage = () => {
     const [cookie] = useCookies();
     const param = useParams();
+    const queryClient = useQueryClient();
     const [openModalVIdeoUpload, setOpenModalVideoUpload] = useState(false);
     const [openModalProfile, setOpenModalProfile] = useState(false);
     const [modalInfo, setModalInfo] = useState({
         header: '',
     });
-    const [profileState, setProfileState] = useState(null);
 
     const openModalProfileAction = header => {
         setOpenModalProfile(true);
@@ -50,20 +50,23 @@ const Mypage = () => {
             };
             getProfileAction(payload, {
                 onSuccess: () => {
-                    setProfileState(dataProfile);
+                    // Invalidate and refresh
+                    // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                    // invalidate 할 수 있어요.
+                    queryClient.invalidateQueries({ queryKey: ['getProfile'] });
+                    //getCommentRefetch();
                 },
             });
         }
     }, []);
-
+    console.log(dataProfile);
     // console.log(isLoadingProfile);
     // console.log(errorProfile);
     // console.log(dataProfile);
     // console.log(profileState);
-
     //console.log(dataProfile.data);
-
     //const { MyVideoCount, SubscriptCount, UserId, UserImage } = dataProfile.data.result_json;
+
     return (
         <>
             <MetaTag
@@ -74,7 +77,7 @@ const Mypage = () => {
             <div className="flex max-w-full gap-3 border-solid border-b border-Slate-600 pt-5 pb-5">
                 <div className="flex flex-col items-center gap-3">
                     <div className="rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500 overflow-hidden">
-                        <img src="/img/user/molly.png" />
+                        <img src={dataProfile?.data.result_json.UserImage} />
                     </div>
                     <Button onClick={() => openModalProfileAction()}>
                         프로필 사진 올리기 <Icon name="user" style={{ marignLeft: '10px' }} />
@@ -120,7 +123,12 @@ const Mypage = () => {
                 setOpen={setOpenModalVideoUpload}
                 UserId={dataProfile?.data.result_json.UserId}
             />
-            <ModalProfile open={openModalProfile} setOpen={setOpenModalProfile} modalInfo={modalInfo} />
+            <ModalProfile
+                open={openModalProfile}
+                setOpen={setOpenModalProfile}
+                getProfileAction={getProfileAction}
+                dataProfile={dataProfile?.data.result_json.UserImage}
+            />
         </>
     );
 };
