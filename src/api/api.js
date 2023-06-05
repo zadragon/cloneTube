@@ -43,6 +43,22 @@ export const apiUser = {
                 console.log(error);
             });
     },
+
+    getMyVideo: payload => {
+        return axios.get(`${process.env.REACT_APP_HOST}/api/videolist`, payload);
+    },
+
+    addUserProfileImg: payload => {
+        return axios
+            .post(`${process.env.REACT_APP_HOST}/api/profile`, payload)
+            .then(response => {
+                console.log(response);
+                return response;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
 };
 
 export const apiVideo = {
@@ -64,6 +80,13 @@ export const apiVideo = {
     addSubscribe: payload => {
         console.log(payload);
         return axios.post(`${process.env.REACT_APP_HOST}/api/subscript`, payload).then(response => {
+            console.log(response);
+        });
+    },
+    addLike: payload => {
+        const { MovieId } = payload;
+        console.log(payload);
+        return axios.post(`${process.env.REACT_APP_HOST}/api/${MovieId}/like`, MovieId).then(response => {
             console.log(response);
         });
     },
