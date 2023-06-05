@@ -7,16 +7,16 @@ import { apiUser } from '../../api/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setProfileImg } from '../../redux/modules/profileSlice';
 
 const Mypage = () => {
     const [cookie] = useCookies();
     const param = useParams();
     const queryClient = useQueryClient();
+    const dispatch = useDispatch();
     const [openModalVIdeoUpload, setOpenModalVideoUpload] = useState(false);
     const [openModalProfile, setOpenModalProfile] = useState(false);
-    const [modalInfo, setModalInfo] = useState({
-        header: '',
-    });
 
     const openModalProfileAction = header => {
         setOpenModalProfile(true);
@@ -50,6 +50,7 @@ const Mypage = () => {
             };
             getProfileAction(payload, {
                 onSuccess: () => {
+                    //alert('등록/재등록');
                     // Invalidate and refresh
                     // 이렇게 하면, todos라는 이름으로 만들었던 query를
                     // invalidate 할 수 있어요.
@@ -57,10 +58,13 @@ const Mypage = () => {
                     //getCommentRefetch();
                 },
             });
+            dispatch(setProfileImg(dataProfile?.data.result_json.UserImage));
         }
     }, []);
-    console.log(dataProfile);
-    // console.log(isLoadingProfile);
+
+    useEffect(() => {
+        dispatch(setProfileImg(dataProfile?.data.result_json.UserImage));
+    }, [dataProfile]);
     // console.log(errorProfile);
     // console.log(dataProfile);
     // console.log(profileState);
@@ -76,7 +80,7 @@ const Mypage = () => {
             />
             <div className="flex max-w-full gap-3 border-solid border-b border-Slate-600 pt-5 pb-5">
                 <div className="flex flex-col items-center gap-3">
-                    <div className="rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500 overflow-hidden">
+                    <div className="flex items-center rounded-full w-32 h-32 bg-gradient-to-r from-cyan-500 to-blue-500 overflow-hidden">
                         <img src={dataProfile?.data.result_json.UserImage} />
                     </div>
                     <Button onClick={() => openModalProfileAction()}>
