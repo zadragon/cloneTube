@@ -101,6 +101,11 @@ export const apiVideo = {
                 console.log(error);
             });
     },
+    SearchResult: payload => {
+        return axios.post(`${process.env.REACT_APP_HOST}/api/search`, payload).then(response => {
+            console.log(response);
+        });
+    },
 };
 
 export const apiSub = {
