@@ -35,11 +35,10 @@ function ModalVIdeoUpload({ open, setOpen, UserId }) {
     };
     const onSubmit = () => {
         apiVideo.videoUpload(videoInfo);
+        console.log(videoInfo);
         alert('등록 되었습니다.');
         setOpen(false);
     };
-
-    console.log('UserId', UserId);
 
     return (
         <Modal open={open}>

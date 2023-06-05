@@ -13,29 +13,10 @@ import styled from 'styled-components';
 const VideoDetail = () => {
     const param = useParams();
     const [cookie] = useCookies();
-    const { data, error, isLoading } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
     const [videos, setVideos] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
-
-    const addSubscribeAction = () => {
-        const payload = {
-            userId: stringId,
-            authorization: cookie.token,
-        };
-        if (cookie.token) {
-            apiVideo.addSubscribe(payload);
-        } else {
-            alert('구독은 로그인을 해주세요.');
-        }
-    };
-
-    const addLikeAction = () => {
-        const payload = {
-            MovieId: param.id,
-        };
-        apiVideo.addLike(payload);
-    };
+    const { data, error, isLoading, refetch } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
 
     const getVideos = async page => {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
@@ -43,6 +24,14 @@ const VideoDetail = () => {
         setVideos(prev => [...prev, ...res.data.VideoList]);
         setLoading(true);
     };
+
+    useEffect(() => {
+        refetch();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    }, [param]);
 
     useEffect(() => {
         getVideos(page);
@@ -70,7 +59,24 @@ const VideoDetail = () => {
         }
     }, [loading]);
 
-    console.log('videos', videos);
+    const addSubscribeAction = () => {
+        const payload = {
+            userId: stringId,
+            authorization: cookie.token,
+        };
+        if (cookie.token) {
+            apiVideo.addSubscribe(payload);
+        } else {
+            alert('구독은 로그인을 해주세요.');
+        }
+    };
+
+    const addLikeAction = () => {
+        const payload = {
+            MovieId: param.id,
+        };
+        apiVideo.addLike(payload);
+    };
 
     if (isLoading) return;
     if (error) return;
@@ -104,7 +110,10 @@ const VideoDetail = () => {
                     <div className="flex border-b border-Slate-600 pt-5 pb-5 gap-5">
                         <Link to="/user/mypage">
                             <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
-                                <img src={UserImage == null ? `/img/user/molly.png` : UserImage} />
+                                <img
+                                    src={UserImage == null ? `/img/user/molly.png` : UserImage}
+                                    style={{ width: '100%', height: '100%' }}
+                                />
                             </div>
                         </Link>
                         <div>

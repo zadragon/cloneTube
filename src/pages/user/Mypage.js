@@ -6,7 +6,7 @@ import MetaTag from '../../components/MetaTag';
 import { apiUser } from '../../api/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setProfileImg } from '../../redux/modules/profileSlice';
 
@@ -15,6 +15,7 @@ const Mypage = () => {
     const param = useParams();
     const queryClient = useQueryClient();
     const dispatch = useDispatch();
+    const navigator = useNavigate();
     const [openModalVIdeoUpload, setOpenModalVideoUpload] = useState(false);
     const [openModalProfile, setOpenModalProfile] = useState(false);
 
@@ -59,6 +60,8 @@ const Mypage = () => {
                 },
             });
             dispatch(setProfileImg(dataProfile?.data.result_json.UserImage));
+        } else {
+            navigator('/');
         }
     }, []);
 

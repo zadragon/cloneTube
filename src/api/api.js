@@ -91,9 +91,15 @@ export const apiVideo = {
         });
     },
     videoUpload: payload => {
-        axios.post(`${process.env.REACT_APP_HOST}/api/upload`, payload).then(response => {
-            console.log(response);
-        });
+        axios
+            .post(`${process.env.REACT_APP_HOST}/api/upload`, payload)
+            .then(response => {
+                console.log(response);
+                alert(response.data.message);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     },
 };
 
