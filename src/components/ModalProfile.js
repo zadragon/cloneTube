@@ -43,7 +43,6 @@ function ModalProfile({ open, setOpen }) {
                                 ref={imgRef}
                                 onChange={e => onChange(e)}
                             ></input>
-                        </Grid>
                     </Grid>
                 </Modal.Description>
             </Modal.Content>
@@ -52,6 +51,7 @@ function ModalProfile({ open, setOpen }) {
                     취소
                 </Button>
                 <Button content="등록" labelPosition="right" icon="checkmark" onClick={() => onSubmit()} positive />
+
             </Modal.Actions>
         </Modal>
     );
