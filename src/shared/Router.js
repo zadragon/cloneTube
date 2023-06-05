@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import VideoList from '../pages/video/VideoList';
+import SearchedVideoList from '../pages/video/SearchedVideoList';
 import VideoDetail from '../pages/video/VideoDetail';
 import Login from '../pages/member/Login';
 import SignUp from '../pages/member/SignUp';
@@ -19,7 +20,7 @@ const Router = () => {
                     <Route path="/member/signup" element={<SignUp />} />
                     {/* 비디오 관련 */}
                     <Route path="/" element={<VideoList />} />
-                    <Route path="/:searchword" element={<VideoList />} />
+                    <Route path="/videos/:searchword" element={<SearchedVideoList />} />
                     <Route path="/video/detail/:id" element={<VideoDetail />} />
 
                     {/* 개인페이지 */}
