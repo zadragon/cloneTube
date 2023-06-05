@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillYoutube, AiOutlineSearch } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Avatar from '@mui/material/Avatar';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { filteredVideos } from '../redux/modules/FilteredSlice';
 
 const Header = () => {
     const [search, setSearch] = useState('');
     const [layerOpen, setLayerOpen] = useState(false);
     const [cookie, setCookie, removeCookie] = useCookies(['token']);
+    const { searchword } = useParams();
+    const navigate = useNavigate();
 
     const logout = () => {
         const result = confirm('정말 로그아웃 하시겠습니까? 🤔');
@@ -21,13 +21,20 @@ const Header = () => {
         }
     };
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        navigate(`/videos/${search}`);
+    };
+
+    useEffect(() => setSearch(searchword || ''), [searchword]);
+
     return (
         <header className="w-full flex mt-2 justify-between items-center">
             <Link to="/" className="flex items-center">
                 <AiFillYoutube className="text-4xl mr-2 text-logo" />
                 <h1 className="font-semibold text-3xl">LoneTube</h1>
             </Link>
-            <form className="w-full flex justify-center h-11">
+            <form onSubmit={handleSubmit} className="w-full flex justify-center h-11">
                 <input
                     className="w-7/12 p-3.5 rounded-full border border-gray-300"
                     type="text"
