@@ -5,6 +5,8 @@ import { useCookies } from 'react-cookie';
 import Avatar from '@mui/material/Avatar';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { apiVideo } from '../api/api';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Header = () => {
     const profileImgData = useSelector(state => state.profileImgState);
@@ -23,8 +25,23 @@ const Header = () => {
         }
     };
 
+    const {
+        data: dataSearch,
+        isLoading: isLoadingSearch,
+        error: errorSearch,
+        mutate: filteredvideos,
+    } = useMutation(payload => {
+        return apiVideo.SearchResult(payload);
+    });
+
     const handleSubmit = e => {
         e.preventDefault();
+        const payload = { search: search };
+        filteredvideos(payload, {
+            onSuccess: () => {
+                console.log('dataSearch', dataSearch);
+            },
+        });
         navigate(`/videos/${search}`);
     };
 

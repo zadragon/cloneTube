@@ -11,10 +11,20 @@ import { useParams } from 'react-router-dom';
 
 export default function SearchedVideoList() {
     const { searchword } = useParams();
-    const { isLoading, error, data } = useQuery(['searchvideos', searchword], () => apiVideo.SearchResult(searchword), {
-        staleTime: 6 * 10 * 1000,
+    // const { isLoading, error, data } = useQuery(['searchvideos', searchword], () => apiVideo.SearchResult(searchword), {
+    //     staleTime: 6 * 10 * 1000,
+    // });
+
+    const {
+        data,
+        isLoading,
+        error,
+        mutate: filteredvideos,
+    } = useMutation(payload => {
+        return apiVideo.SearchResult(payload);
     });
 
     console.log('searchdata', data);
+
     return <></>;
 }
