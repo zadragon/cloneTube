@@ -38,13 +38,14 @@ const Header = () => {
         e.preventDefault();
         const payload = { search: search };
         filteredvideos(payload, {
-            onSuccess: () => {
-                console.log('dataSearch', dataSearch);
-            },
+            // onSuccess: () => {
+            //     console.log('dataSearch', dataSearch);
+            // },
         });
         navigate(`/videos/${search}`);
     };
 
+    console.log('dataSearchhhh', dataSearch);
     useEffect(() => setSearch(searchword || ''), [searchword]);
 
     return (

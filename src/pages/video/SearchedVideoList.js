@@ -15,16 +15,16 @@ export default function SearchedVideoList() {
     //     staleTime: 6 * 10 * 1000,
     // });
 
-    const {
-        data,
-        isLoading,
-        error,
-        mutate: filteredvideos,
-    } = useMutation(payload => {
-        return apiVideo.SearchResult(payload);
-    });
+    // const {
+    //     data,
+    //     isLoading,
+    //     error,
+    //     mutate: filteredvideos,
+    // } = useMutation(payload => {
+    //     return apiVideo.SearchResult(payload);
+    // });
 
-    console.log('searchdata', data);
+    // console.log('searchdata', data);
 
     return <></>;
 }
