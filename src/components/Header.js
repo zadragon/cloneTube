@@ -4,9 +4,10 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Avatar from '@mui/material/Avatar';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { apiVideo } from '../api/api';
 import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { SearchVideos } from '../redux/modules/searchedSlice';
 
 const Header = () => {
     const profileImgData = useSelector(state => state.profileImgState);
@@ -15,6 +16,7 @@ const Header = () => {
     const [cookie, setCookie, removeCookie] = useCookies(['token']);
     const { searchword } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const logout = () => {
         const result = confirm('정말 로그아웃 하시겠습니까? 🤔');
@@ -25,29 +27,42 @@ const Header = () => {
         }
     };
 
-    const {
-        data: dataSearch,
-        isLoading: isLoadingSearch,
-        error: errorSearch,
-        mutate: filteredvideos,
-    } = useMutation(payload => {
-        return apiVideo.SearchResult(payload);
-    });
-
     const handleSubmit = e => {
         e.preventDefault();
-        const payload = { search: search };
-        filteredvideos(payload, {
-            onSuccess: () => {},
-        });
+        dispatch(SearchVideos(search));
         navigate(`/videos/${search}`);
+        setSearch('');
     };
 
-    useEffect(() => {
-        console.log('dataSearch useEffect', dataSearch);
-    }, [dataSearch]);
+    // const {
+    //     data: dataSearch,
+    //     isLoading: isLoadingSearch,
+    //     error: errorSearch,
+    //     mutate: filteredvideos,
+    // } = useMutation(payload => {
+    //     return apiVideo.SearchResult(payload);
+    // });
 
-    useEffect(() => setSearch(searchword || ''), [searchword]);
+    // const handleSubmit = e => {
+    //     e.preventDefault();
+    //     const payload = { search: search };
+    //     filteredvideos(payload, {
+    //         onSuccess: () => {},
+    //         onSuccess: () => {
+    //             console.log('dataSearch', dataSearch);
+    //         },
+    //     });
+    //     navigate(`/videos/${search}`);
+    // };
+
+    // useEffect(() => {
+    //     console.log('dataSearch useEffect', dataSearch);
+    //     dispatch(SearchVideos({ dataSearch }));
+    // }, [dataSearch]);
+
+    // console.log('dataSearchhhh', dataSearch);
+
+    // useEffect(() => setSearch(searchword || ''), [searchword]);
 
     return (
         <header className="w-full flex mt-2 justify-between items-center">

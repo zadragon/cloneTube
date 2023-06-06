@@ -39,8 +39,8 @@ const Mypage = () => {
         data: videoData,
         error,
         isLoading,
-        refetch: getCommentRefetch,
-    } = useQuery('getMyVideo', () => apiUser.getMyVideo({ authorization: cookie.token }));
+        mutate: getMyVideo,
+    } = useMutation('getMyVideo', () => apiUser.getMyVideo({ authorization: cookie.token }));
 
     useEffect(() => {
         if (cookie.token) {
@@ -50,14 +50,21 @@ const Mypage = () => {
             };
             getProfileAction(payload, {
                 onSuccess: () => {
-                    //alert('등록/재등록');
                     // Invalidate and refresh
                     // 이렇게 하면, todos라는 이름으로 만들었던 query를
                     // invalidate 할 수 있어요.
                     queryClient.invalidateQueries({ queryKey: ['getProfile'] });
-                    //getCommentRefetch();
                 },
             });
+            getMyVideo(payload, {
+                onSuccess: () => {
+                    // Invalidate and refresh
+                    // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                    // invalidate 할 수 있어요.
+                    queryClient.invalidateQueries({ queryKey: ['getMyVideo'] });
+                },
+            });
+
             dispatch(setProfileImg(dataProfile?.data.result_json.UserImage));
         }
     }, []);
@@ -65,11 +72,6 @@ const Mypage = () => {
     useEffect(() => {
         dispatch(setProfileImg(dataProfile?.data.result_json.UserImage));
     }, [dataProfile]);
-    // console.log(errorProfile);
-    // console.log(dataProfile);
-    // console.log(profileState);
-    //console.log(dataProfile.data);
-    //const { MyVideoCount, SubscriptCount, UserId, UserImage } = dataProfile.data.result_json;
 
     return (
         <>
@@ -106,15 +108,13 @@ const Mypage = () => {
                 </div>
                 <div className="pb-5">
                     <Item.Group>
-                        {videoData?.data.VideoList.map((item, idx) => {
+                        {videoData?.data.MyVideoList.map((item, idx) => {
                             return (
                                 <Item key={idx}>
                                     <Item.Image size="tiny" src={item.ThumbNail} />
-
                                     <Item.Content>
                                         <Item.Header as="a">{item.Title}</Item.Header>
-                                        <Item.Meta>{item.View}</Item.Meta>
-                                        <Item.Description>Description</Item.Description>
+                                        <Item.Meta>조회수 : {item.View}</Item.Meta>
                                     </Item.Content>
                                 </Item>
                             );
@@ -126,6 +126,7 @@ const Mypage = () => {
                 open={openModalVIdeoUpload}
                 setOpen={setOpenModalVideoUpload}
                 UserId={dataProfile?.data.result_json.UserId}
+                getMyVideo={getMyVideo}
             />
             <ModalProfile
                 open={openModalProfile}
