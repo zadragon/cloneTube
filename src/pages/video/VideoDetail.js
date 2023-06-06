@@ -5,7 +5,7 @@ import VideoCard from '../../components/VideoCard';
 import MetaTag from '../../components/MetaTag';
 import { Link, useParams } from 'react-router-dom';
 import { apiUser, apiVideo } from '../../api/api';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -16,7 +16,56 @@ const VideoDetail = () => {
     const [videos, setVideos] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const queryClient = useQueryClient();
     const { data, error, isLoading, refetch } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
+    const { dataView, errorView, isLoadingView } = useQuery('getAddView', () => apiVideo.getAddView(param.id));
+
+    const {
+        data: dataLike,
+        error: errorLike,
+        isLoading: isLoadingLike,
+        mutate: mutateLike,
+    } = useMutation('videoLike', payload => apiVideo.addLike(payload));
+
+    const {
+        data: dataSubscribe,
+        error: errorSubscribe,
+        isLoading: isLoadingSubscribe,
+        mutate: mutateSubscribe,
+    } = useMutation('videoSubscribe', payload => apiVideo.addSubscribe(payload));
+
+    const addSubscribeAction = () => {
+        const payload = {
+            userId: stringId,
+            authorization: cookie.token,
+        };
+        if (cookie.token) {
+            mutateSubscribe(payload, {
+                onSuccess: () => {
+                    // Invalidate and refresh
+                    // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                    // invalidate 할 수 있어요.
+                    queryClient.invalidateQueries({ queryKey: ['getVideoDetail'] });
+                },
+            });
+        } else {
+            alert('구독은 로그인을 해주세요.');
+        }
+    };
+
+    const addLikeAction = () => {
+        const payload = {
+            MovieId: param.id,
+        };
+        mutateLike(payload, {
+            onSuccess: () => {
+                // Invalidate and refresh
+                // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                // invalidate 할 수 있어요.
+                queryClient.invalidateQueries({ queryKey: ['getVideoDetail'] });
+            },
+        });
+    };
 
     const getVideos = async page => {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/api/videolist/${page}`);
@@ -58,25 +107,6 @@ const VideoDetail = () => {
             observer.observe(target.current);
         }
     }, [loading]);
-
-    const addSubscribeAction = () => {
-        const payload = {
-            userId: stringId,
-            authorization: cookie.token,
-        };
-        if (cookie.token) {
-            apiVideo.addSubscribe(payload);
-        } else {
-            alert('구독은 로그인을 해주세요.');
-        }
-    };
-
-    const addLikeAction = () => {
-        const payload = {
-            MovieId: param.id,
-        };
-        apiVideo.addLike(payload);
-    };
 
     if (isLoading) return;
     if (error) return;

@@ -45,7 +45,15 @@ export const apiUser = {
     },
 
     getMyVideo: payload => {
-        return axios.get(`${process.env.REACT_APP_HOST}/api/videolist`, payload);
+        return axios
+            .post(`${process.env.REACT_APP_HOST}/api/myvideolist`, payload)
+            .then(response => {
+                console.log(response);
+                return response;
+            })
+            .catch(error => {
+                console.log(error);
+            });
     },
 
     addUserProfileImg: payload => {
@@ -62,6 +70,11 @@ export const apiUser = {
 };
 
 export const apiVideo = {
+    getAddView: id => {
+        return axios.get(`${process.env.REACT_APP_HOST}/api/${id}/view`).then(response => {
+            console.log(response);
+        });
+    },
     getVideoList: () => {
         return axios.get(`${process.env.REACT_APP_HOST}/api/videolist`);
     },
@@ -104,6 +117,7 @@ export const apiVideo = {
     SearchResult: payload => {
         return axios.post(`${process.env.REACT_APP_HOST}/api/search`, payload).then(response => {
             console.log(response);
+            return response;
         });
     },
 };
