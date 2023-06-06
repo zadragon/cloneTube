@@ -147,7 +147,7 @@ const VideoDetail = () => {
                             </div>
                         </Link>
                         <div>
-                            <p className="font-bold text-xl">{numberId}</p>
+                            <p className="font-bold text-xl">{stringId}</p>
                             <p>구독자 {SubscriptCount}명</p>
                         </div>
                         <div>
