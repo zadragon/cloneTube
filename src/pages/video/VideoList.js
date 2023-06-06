@@ -82,7 +82,7 @@ const VideoWrap = styled.div`
 const InfyScrollTarget = styled.div`
     position: absolute;
     bottom: 0;
-    right: -100px;
+    left: -100px;
     width: 100px;
     height: 250px;
     background-color: white;
@@ -90,5 +90,3 @@ const InfyScrollTarget = styled.div`
 `;
 
 export default VideoList;
-
-//
