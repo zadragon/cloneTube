@@ -3,8 +3,10 @@ import React, { useState, useRef } from 'react';
 import { Button, Image, Modal } from 'semantic-ui-react';
 import { apiVideo } from '../api/api';
 import { useCookies } from 'react-cookie';
+import { useParams } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
-function ModalVIdeoUpload({ open, setOpen, UserId }) {
+function ModalVIdeoUpload({ open, setOpen, UserId, getMyVideo }) {
     const [videoInfo, setVideoInfo] = useState({
         authorization: '',
         thumbnail: '',
@@ -14,6 +16,8 @@ function ModalVIdeoUpload({ open, setOpen, UserId }) {
 
     const [cookie] = useCookies();
     const imgRef = useRef();
+    const param = useParams();
+    const queryClient = useQueryClient();
 
     const onChangeImg = e => {
         const img = e.target.files[0];
@@ -34,8 +38,26 @@ function ModalVIdeoUpload({ open, setOpen, UserId }) {
         setVideoInfo({ ...videoInfo, [name]: value });
     };
     const onSubmit = () => {
+        const payload = {
+            token: { authorization: cookie.token },
+            id: param.id,
+        };
         apiVideo.videoUpload(videoInfo);
+        getMyVideo(payload, {
+            onSuccess: () => {
+                // Invalidate and refresh
+                // 이렇게 하면, todos라는 이름으로 만들었던 query를
+                // invalidate 할 수 있어요.
+                queryClient.invalidateQueries({ queryKey: ['getMyVideo'] });
+            },
+        });
         alert('등록 되었습니다.');
+        setVideoInfo({
+            authorization: '',
+            thumbnail: '',
+            title: '',
+            URL: '',
+        });
         setOpen(false);
     };
 
