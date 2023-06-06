@@ -6,7 +6,7 @@ import MetaTag from '../../components/MetaTag';
 import { apiUser } from '../../api/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setProfileImg } from '../../redux/modules/profileSlice';
 
@@ -113,11 +113,15 @@ const Mypage = () => {
                     <Item.Group>
                         {videoData?.data.MyVideoList.map((item, idx) => {
                             return (
-                                <Item key={idx}>
-                                    <Item.Image size="tiny" src={item.ThumbNail} />
-                                    <Item.Content>
-                                        <Item.Header as="a">{item.Title}</Item.Header>
-                                        <Item.Meta>조회수 : {item.View}</Item.Meta>
+                                <Item key={idx} style={{ borderTop: '1px solid #ddd', padding: '20px 0px 0' }}>
+                                    <Link to={`/video/detail/${item.MovieId}`}>
+                                        <Item.Image size="tiny" src={item.ThumbNail} />
+                                    </Link>
+                                    <Item.Content style={{ marginLeft: '10px' }}>
+                                        <Link to={`/video/detail/${item.MovieId}`}>
+                                            <Item.Header as="a">{item.Title}</Item.Header>
+                                            <Item.Meta>조회수 : {item.View}</Item.Meta>
+                                        </Link>
                                     </Item.Content>
                                 </Item>
                             );

@@ -62,6 +62,12 @@ const CommentBox = () => {
         });
     };
 
+    const onKeyDown = e => {
+        if (e.key === 'Enter') {
+            addCommentAction(e); // Enter 입력이 되면 클릭 이벤트 실행
+        }
+    };
+
     /* 아이디 비밀번호 setInput */
     const onChangeHandler = e => {
         const { value } = e.target; // 우선 e.target 에서 name 과 value 를 추출
@@ -86,6 +92,7 @@ const CommentBox = () => {
                                 name="Comment"
                                 value={inputs}
                                 onChange={onChangeHandler}
+                                onKeyDown={e => onKeyDown(e)}
                             />
                             <Button content="Add Reply" labelPosition="left" icon="edit" color="youtube" />
                         </div>
