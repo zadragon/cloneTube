@@ -9,7 +9,6 @@ const profileSlice = createSlice({
     initialState,
     reducers: {
         setProfileImg: (state, action) => {
-            console.log(action.payload);
             return { ...state, profileImg: action.payload };
         },
     },

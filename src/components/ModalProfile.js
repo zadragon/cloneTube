@@ -23,6 +23,7 @@ function ModalProfile({ open, setOpen, getProfileAction, dataProfile }) {
     };
 
     const onSubmit = () => {
+        console.log('imgSendData', imgSendData);
         apiUser.addUserProfileImg(imgSendData);
 
         const payload = {

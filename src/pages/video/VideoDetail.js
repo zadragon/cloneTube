@@ -17,7 +17,7 @@ const VideoDetail = () => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const queryClient = useQueryClient();
-    const { data, error, isLoading } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
+    const { data, error, isLoading, refetch } = useQuery('getVideoDetail', () => apiVideo.getVideoDetail(param.id));
     const { dataView, errorView, isLoadingView } = useQuery('getAddView', () => apiVideo.getAddView(param.id));
 
     const {
@@ -75,6 +75,14 @@ const VideoDetail = () => {
     };
 
     useEffect(() => {
+        refetch();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    }, [param]);
+
+    useEffect(() => {
         getVideos(page);
     }, [page]);
 
@@ -99,8 +107,6 @@ const VideoDetail = () => {
             observer.observe(target.current);
         }
     }, [loading]);
-
-    console.log('videos', videos);
 
     if (isLoading) return;
     if (error) return;
@@ -134,7 +140,10 @@ const VideoDetail = () => {
                     <div className="flex border-b border-Slate-600 pt-5 pb-5 gap-5">
                         <Link to="/user/mypage">
                             <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
-                                <img src={UserImage == null ? `/img/user/molly.png` : UserImage} />
+                                <img
+                                    src={UserImage == null ? `/img/user/molly.png` : UserImage}
+                                    style={{ width: '100%', height: '100%' }}
+                                />
                             </div>
                         </Link>
                         <div>

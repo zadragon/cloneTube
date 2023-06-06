@@ -61,8 +61,6 @@ function ModalVIdeoUpload({ open, setOpen, UserId, getMyVideo }) {
         setOpen(false);
     };
 
-    console.log('UserId', UserId);
-
     return (
         <Modal open={open}>
             <Modal.Header>영상 업로드</Modal.Header>

@@ -19,14 +19,10 @@ export default function Sidebar() {
         return apiSub.getSubList(payload);
     });
     useEffect(() => {
-        console.log('cookie', cookie.token);
-        console.log('isLoading', isLoading);
-        console.log('error', error);
         getSubData(cookie.token);
     }, []);
-
-    console.log('sublistdata', data);
-
+    if (isLoading) return <div>...로딩중</div>;
+    if (error) return <div>...에러발생</div>;
     return (
         <div className="w-1/6">
             {cookie.token ? (
