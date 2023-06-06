@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SearchVideos } from '../../redux/modules/searchedSlice';
 
 export default function SearchedVideoList() {
-    const { searchedVideoState } = useSelector(state => state.searchedVideoState);
+    const searchedVideoState = useSelector(state => state.searchedVideoState);
 
     console.log(searchedVideoState);
 
