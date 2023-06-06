@@ -82,10 +82,10 @@ const VideoWrap = styled.div`
 const InfyScrollTarget = styled.div`
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: -100px;
     width: 100px;
     height: 250px;
-    background-color: aliceblue;
+    background-color: white;
     opacity: 0.9;
 `;
 
