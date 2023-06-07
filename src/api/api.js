@@ -90,11 +90,31 @@ export const apiVideo = {
             console.log(response);
         });
     },
+    removeComment: payload => {
+        const { id, commentId, token } = payload;
+        console.log(payload);
+        return axios
+            .delete(`${process.env.REACT_APP_HOST}/api/movie/${id}/comment/${commentId}`, {
+                authorization: token,
+            })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
     addSubscribe: payload => {
         console.log(payload);
-        return axios.post(`${process.env.REACT_APP_HOST}/api/subscript`, payload).then(response => {
-            console.log(response);
-        });
+        return axios
+            .post(`${process.env.REACT_APP_HOST}/api/subscript`, payload)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+                alert(error.response.data.errorMessage);
+            });
     },
     addLike: payload => {
         const { MovieId } = payload;

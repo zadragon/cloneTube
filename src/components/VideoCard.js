@@ -11,7 +11,19 @@ export default function VideoCard({ videoInfo }) {
                 <div className="flex mt-2">
                     <img className="w-8 h-8 rounded-full mr-3" src={UserImage} />
                     <div>
-                        <p className="font-semibold my-px">{Title}</p>
+                        <p
+                            className="font-semibold my-px"
+                            style={{
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                wordBreak: 'break-word',
+                                display: '-webkit-box',
+                                '-webkit-line-clamp': '2',
+                                '-webkit-box-orient': 'vertical',
+                            }}
+                        >
+                            {Title}
+                        </p>
                         <p className="text-xs text-gray-500">
                             <strong> {UserId}</strong>
                         </p>

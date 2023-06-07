@@ -162,7 +162,7 @@ const VideoDetail = () => {
                     <CommentBox />
                 </div>
 
-                <div className="relative">
+                <div className="relative" style={{ width: '20%' }}>
                     <div className="flex-col">
                         {videos?.map((videoInfo, idx) => {
                             return <VideoCard key={idx} videoInfo={videoInfo} />;
